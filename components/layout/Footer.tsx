@@ -26,7 +26,7 @@ export default function Footer() {
               height={50}
               className="h-12 w-auto mb-6"
             />
-            <p className="text-gray-300 text-2xl md:text-3xl max-w-2xl leading-relaxed">
+            <p className="text-gray-300 text-xl md:text-2xl max-w-2xl leading-relaxed md:leading-relaxed">
               Fiji&apos;s first ride-hailing platform for tourists and locals across Fiji. Led by an experienced local operator with deep roots in Fiji&apos;s taxi industry. Book by phone with professional, verified drivers and pay your driver in cash. App updates coming soon, subject to required approvals.
             </p>
           </div>
