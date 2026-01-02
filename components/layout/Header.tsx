@@ -20,6 +20,10 @@ export default function Header() {
     { name: 'App', href: '/#app-coming-soon', badge: 'Soon' },
   ]
 
+  // Compact desktop nav: keep key items visible at lg widths, show full nav at xl+
+  const compactDesktopNavNames = new Set(['Ride', 'How it works', 'Features', 'Drive', 'App'])
+  const compactDesktopNavigation = navigation.filter((item) => compactDesktopNavNames.has(item.name))
+
   return (
     <header className="bg-white/80 backdrop-blur-xl border-b border-gray-100 sticky top-0 z-50">
       <a
@@ -56,13 +60,30 @@ export default function Header() {
             </button>
           </div>
 
-          {/* Desktop navigation - Updated with Badge */}
-          <div className="hidden lg:flex lg:gap-x-6 lg:items-center">
+          {/* Desktop navigation - Compact on lg, full on xl */}
+          <div className="hidden lg:flex xl:hidden lg:gap-x-4 lg:items-center">
+            {compactDesktopNavigation.map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                className="relative text-xs font-medium leading-6 text-black hover:text-primary transition-colors inline-flex items-center gap-2 whitespace-nowrap"
+              >
+                {item.name}
+                {item.badge && (
+                  <span className="px-2 py-0.5 text-[10px] font-bold bg-primary text-white rounded-full">
+                    {item.badge}
+                  </span>
+                )}
+              </a>
+            ))}
+          </div>
+
+          <div className="hidden xl:flex xl:gap-x-6 xl:items-center">
             {navigation.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
-                className="relative text-sm font-medium leading-6 text-black hover:text-primary transition-colors inline-flex items-center gap-2"
+                className="relative text-sm font-medium leading-6 text-black hover:text-primary transition-colors inline-flex items-center gap-2 whitespace-nowrap"
               >
                 {item.name}
                 {item.badge && (
@@ -75,16 +96,16 @@ export default function Header() {
           </div>
 
           {/* Desktop CTA - Phone + Contact */}
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-4">
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-3">
             <a 
               href="tel:+6799680798"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-black hover:bg-gray-900 text-white rounded-full font-semibold text-sm transition-all"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-black hover:bg-gray-900 text-white rounded-full font-semibold text-sm transition-all"
               aria-label="Call to book by phone"
             >
               <PhoneIcon className="w-4 h-4" strokeWidth={1.5} aria-hidden="true" />
               Call now
             </a>
-            <Button variant="primary" href="/#contact" className="rounded-full px-6 py-2.5 text-sm font-semibold">
+            <Button variant="primary" href="/#contact" className="rounded-full px-5 py-2 text-sm font-semibold">
               Contact
             </Button>
           </div>
