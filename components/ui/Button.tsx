@@ -159,6 +159,7 @@ export default function Button({
     return (
       <a
         href={href}
+        onClick={onClick}
         className={`${buttonClasses} group`}
         aria-label={ariaLabel || (typeof children === 'string' ? children : undefined)}
         {...interactionProps}
