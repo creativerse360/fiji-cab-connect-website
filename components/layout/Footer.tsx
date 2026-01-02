@@ -1,8 +1,6 @@
 import Image from 'next/image'
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear()
-
   const links = [
     { name: 'Ride', href: '/#home' },
     { name: 'App Coming Soon', href: '/#app-coming-soon' },
@@ -28,8 +26,8 @@ export default function Footer() {
               height={50}
               className="h-12 w-auto mb-6"
             />
-            <p className="text-gray-400 text-xl max-w-lg leading-relaxed">
-              Fiji's first ride-hailing platform. Fast, safe, and affordable rides across the islands.
+            <p className="text-gray-300 text-2xl md:text-3xl max-w-2xl leading-relaxed">
+              Fiji&apos;s first ride-hailing platform. Phone booking available now. App updates coming soon, subject to required approvals.
             </p>
           </div>
 
@@ -65,7 +63,7 @@ export default function Footer() {
 
           {/* Copyright */}
           <p className="text-base text-gray-500">
-            © {currentYear} FIJI CAB CONNECT. All rights reserved.
+            © FIJI CAB CONNECT. All rights reserved.
           </p>
         </div>
       </div>
