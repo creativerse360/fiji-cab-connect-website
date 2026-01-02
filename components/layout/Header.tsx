@@ -53,10 +53,16 @@ export default function Header() {
             <button
               type="button"
               className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-black"
-              onClick={() => setMobileMenuOpen(true)}
+              onClick={() => setMobileMenuOpen((open) => !open)}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-menu"
             >
-              <span className="sr-only">Open main menu</span>
-              <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+              <span className="sr-only">{mobileMenuOpen ? 'Close main menu' : 'Open main menu'}</span>
+              {mobileMenuOpen ? (
+                <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+              ) : (
+                <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+              )}
             </button>
           </div>
 
@@ -114,14 +120,14 @@ export default function Header() {
 
       {/* Mobile menu - Premium */}
       {mobileMenuOpen && (
-        <div className="lg:hidden">
+        <div className="lg:hidden" id="mobile-menu" role="dialog" aria-modal="true">
           <div
-            className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm"
+            className="fixed inset-0 z-[100] bg-black/20 backdrop-blur-sm"
             onClick={() => setMobileMenuOpen(false)}
             aria-hidden="true"
             role="presentation"
           />
-          <div className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm">
+          <div className="fixed inset-y-0 right-0 z-[110] w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm">
             <div className="flex items-center justify-between">
               <a href="/" className="-m-1.5 p-1.5">
                 <Image
