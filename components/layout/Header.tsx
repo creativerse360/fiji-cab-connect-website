@@ -10,10 +10,14 @@ export default function Header() {
 
   const navigation = [
     { name: 'Ride', href: '/#home' },
-    { name: 'App', href: '/#app-coming-soon', badge: 'Soon' },
-    { name: 'Drive', href: '/#drivers' },
+    { name: 'How it works', href: '/#how-it-works' },
     { name: 'Features', href: '/#features' },
-    { name: 'Contact', href: '/#contact' },
+    { name: 'Tourists', href: '/#tourists' },
+    { name: 'Pricing', href: '/#pricing' },
+    { name: 'Safety', href: '/#safety' },
+    { name: 'FAQ', href: '/#faq' },
+    { name: 'Drive', href: '/#drivers' },
+    { name: 'App', href: '/#app-coming-soon', badge: 'Soon' },
   ]
 
   return (
@@ -32,10 +36,10 @@ export default function Header() {
               <Image
                 src="/logo/logo-horizontal.svg"
                 alt="FIJICAB CONNECT"
-                width={220}
-                height={40}
+                width={260}
+                height={52}
                 priority
-                className="h-8 w-auto"
+                className="h-9 sm:h-10 md:h-11 w-auto"
               />
             </a>
           </div>
@@ -53,7 +57,7 @@ export default function Header() {
           </div>
 
           {/* Desktop navigation - Updated with Badge */}
-          <div className="hidden lg:flex lg:gap-x-8 lg:items-center">
+          <div className="hidden lg:flex lg:gap-x-6 lg:items-center">
             {navigation.map((item) => (
               <a
                 key={item.name}
@@ -102,9 +106,9 @@ export default function Header() {
                 <Image
                   src="/logo/logo-horizontal.svg"
                   alt="FIJI CAB CONNECT logo"
-                  width={180}
-                  height={35}
-                  className="h-7 w-auto"
+                  width={220}
+                  height={44}
+                  className="h-8 w-auto"
                 />
               </a>
               <button

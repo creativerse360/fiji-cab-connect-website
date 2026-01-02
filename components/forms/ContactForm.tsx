@@ -27,20 +27,34 @@ export default function ContactForm() {
     setErrorMessage('')
 
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      })
+      const subjectLabel =
+        formData.subject === 'booking'
+          ? 'Phone booking'
+          : formData.subject === 'driver'
+            ? 'Become a driver'
+            : formData.subject === 'tourist'
+              ? 'Tourist information'
+              : formData.subject === 'partnership'
+                ? 'Partnership'
+                : formData.subject === 'app-launch-notification'
+                  ? 'App updates'
+                  : 'General inquiry'
 
-      const data = await response.json().catch(() => null)
+      const lines = [
+        `Name: ${formData.name}`,
+        `Email: ${formData.email}`,
+        formData.phone ? `Phone: ${formData.phone}` : '',
+        '',
+        `Topic: ${subjectLabel}`,
+        '',
+        formData.message,
+      ].filter(Boolean)
 
-      if (!response.ok) {
-        setStatus('error')
-        setErrorMessage(data?.error || 'Something went wrong. Please try again.')
-        setTimeout(() => setStatus('idle'), 5000)
-        return
-      }
+      const mailto = `mailto:info@fijicabconnect.com?subject=${encodeURIComponent(
+        `FIJI CAB CONNECT - ${subjectLabel}`
+      )}&body=${encodeURIComponent(lines.join('\n'))}`
+
+      window.location.href = mailto
       
       setStatus('success')
       setFormData({
@@ -55,7 +69,7 @@ export default function ContactForm() {
       setTimeout(() => setStatus('idle'), 5000)
     } catch (error) {
       setStatus('error')
-      setErrorMessage('Something went wrong. Please try again or email us directly.')
+      setErrorMessage('Please email us at info@fijicabconnect.com or call to book by phone.')
       setTimeout(() => setStatus('idle'), 5000)
     }
   }

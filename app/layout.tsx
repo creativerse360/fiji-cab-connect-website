@@ -29,11 +29,6 @@ export const metadata: Metadata = {
     title: 'FIJI CAB CONNECT - Ride Anywhere in Fiji',
     description: 'Professional taxi and cab service across the Fiji Islands. Call to book your ride.',
   },
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-  },
   robots: {
     index: true,
     follow: true,
@@ -45,6 +40,12 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
 }
 
 export default function RootLayout({
