@@ -1,12 +1,26 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Bars3Icon, PhoneIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
+import { createPortal } from 'react-dom'
 import Button from '@/components/ui/Button'
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const portalTarget = useMemo(() => {
+    if (typeof document === 'undefined') return null
+    return document.body
+  }, [])
+
+  // Lock scroll when mobile drawer is open
+  useEffect(() => {
+    if (typeof document === 'undefined') return
+    document.body.style.overflow = mobileMenuOpen ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [mobileMenuOpen])
 
   const navigation = [
     { name: 'Ride', href: '/#home' },
@@ -53,10 +67,16 @@ export default function Header() {
             <button
               type="button"
               className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-black"
-              onClick={() => setMobileMenuOpen(true)}
+              onClick={() => setMobileMenuOpen((open) => !open)}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-menu"
             >
-              <span className="sr-only">Open main menu</span>
-              <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+              <span className="sr-only">{mobileMenuOpen ? 'Close main menu' : 'Open main menu'}</span>
+              {mobileMenuOpen ? (
+                <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+              ) : (
+                <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+              )}
             </button>
           </div>
 
@@ -113,73 +133,75 @@ export default function Header() {
       </nav>
 
       {/* Mobile menu - Premium */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden">
-          <div
-            className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm"
-            onClick={() => setMobileMenuOpen(false)}
-            aria-hidden="true"
-            role="presentation"
-          />
-          <div className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm">
-            <div className="flex items-center justify-between">
-              <a href="/" className="-m-1.5 p-1.5">
-                <Image
-                  src="/logo/logo-horizontal.svg"
-                  alt="FIJI CAB CONNECT logo"
-                  width={220}
-                  height={44}
-                  className="h-8 w-auto"
-                />
-              </a>
-              <button
-                type="button"
-                className="-m-2.5 rounded-md p-2.5 text-black"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <span className="sr-only">Close menu</span>
-                <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-              </button>
-            </div>
-            <div className="mt-10 flow-root">
-              <div className="space-y-2">
-                {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className="flex items-center justify-between py-3 text-lg font-semibold text-black hover:text-primary transition-colors"
+      {mobileMenuOpen && portalTarget
+        ? createPortal(
+            <div
+              className="lg:hidden fixed inset-0 z-[1000] bg-white overflow-y-auto"
+              id="mobile-menu"
+              role="dialog"
+              aria-modal="true"
+            >
+              <div className="px-6 py-6 min-h-screen">
+                <div className="flex items-center justify-between">
+                  <a href="/" className="-m-1.5 p-1.5">
+                    <Image
+                      src="/logo/logo-horizontal.svg"
+                      alt="FIJI CAB CONNECT logo"
+                      width={220}
+                      height={44}
+                      className="h-8 w-auto"
+                    />
+                  </a>
+                  <button
+                    type="button"
+                    className="-m-2.5 rounded-md p-2.5 text-black"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    <span>{item.name}</span>
-                    {item.badge && (
-                      <span className="px-3 py-1 text-xs font-bold bg-primary text-white rounded-full">
-                        {item.badge}
-                      </span>
-                    )}
-                  </a>
-                ))}
+                    <span className="sr-only">Close menu</span>
+                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                  </button>
+                </div>
+                <div className="mt-6 border-t border-gray-100 pt-4">
+                  <div className="space-y-1" role="navigation" aria-label="Mobile">
+                    {navigation.map((item) => (
+                      <a
+                        key={item.name}
+                        href={item.href}
+                        className="flex items-center justify-between py-3 text-lg font-semibold text-black hover:text-primary transition-colors"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        <span>{item.name}</span>
+                        {item.badge && (
+                          <span className="px-3 py-1 text-xs font-bold bg-primary text-white rounded-full">
+                            {item.badge}
+                          </span>
+                        )}
+                      </a>
+                    ))}
+                  </div>
+                  <div className="mt-8 space-y-4">
+                    <a
+                      href="tel:+6799680798"
+                      className="block w-full text-center px-6 py-4 bg-black text-white rounded-full font-bold text-base hover:bg-gray-900 transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Call: +679 9680798
+                    </a>
+                    <Button
+                      variant="primary"
+                      href="/#contact"
+                      className="w-full rounded-full py-4 text-base font-semibold"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Contact us
+                    </Button>
+                  </div>
+                </div>
               </div>
-              <div className="mt-10 space-y-4">
-                <a 
-                  href="tel:+6799680798"
-                  className="block w-full text-center px-6 py-4 bg-black text-white rounded-full font-bold text-base hover:bg-gray-900 transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Call: +679 9680798
-                </a>
-                <Button 
-                  variant="primary" 
-                  href="/#contact" 
-                  className="w-full rounded-full py-4 text-base font-semibold"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Contact us
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+            </div>,
+            portalTarget,
+          )
+        : null}
     </header>
   )
 }

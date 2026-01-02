@@ -189,11 +189,13 @@ a:focus-visible {
   transition: outline-offset 0.2s ease;
 }
 
-/* Enhanced button hover with micro-interaction */
-button:hover:not(:disabled),
-a:hover {
-  transform: translateY(-2px);
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+/* Enhanced hover micro-interactions (avoid touch hover quirks) */
+@media (hover: hover) and (pointer: fine) {
+  button:hover:not(:disabled),
+  a:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
 }
 
 button:active:not(:disabled),
