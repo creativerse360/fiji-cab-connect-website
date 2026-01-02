@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Bars3Icon, PhoneIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import { createPortal } from 'react-dom'
@@ -8,20 +8,19 @@ import Button from '@/components/ui/Button'
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [isClient, setIsClient] = useState(false)
-
-  useEffect(() => {
-    setIsClient(true)
+  const portalTarget = useMemo(() => {
+    if (typeof document === 'undefined') return null
+    return document.body
   }, [])
 
   // Lock scroll when mobile drawer is open
   useEffect(() => {
-    if (!isClient) return
+    if (typeof document === 'undefined') return
     document.body.style.overflow = mobileMenuOpen ? 'hidden' : ''
     return () => {
       document.body.style.overflow = ''
     }
-  }, [isClient, mobileMenuOpen])
+  }, [mobileMenuOpen])
 
   const navigation = [
     { name: 'Ride', href: '/#home' },
@@ -134,7 +133,7 @@ export default function Header() {
       </nav>
 
       {/* Mobile menu - Premium */}
-      {isClient && mobileMenuOpen
+      {mobileMenuOpen && portalTarget
         ? createPortal(
             <div
               className="lg:hidden fixed inset-0 z-[1000] bg-white overflow-y-auto"
@@ -142,7 +141,7 @@ export default function Header() {
               role="dialog"
               aria-modal="true"
             >
-              <div className="px-6 py-6">
+              <div className="px-6 py-6 min-h-screen">
                 <div className="flex items-center justify-between">
                   <a href="/" className="-m-1.5 p-1.5">
                     <Image
@@ -162,8 +161,8 @@ export default function Header() {
                     <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
-                <div className="mt-10">
-                  <div className="space-y-2" role="navigation" aria-label="Mobile">
+                <div className="mt-6 border-t border-gray-100 pt-4">
+                  <div className="space-y-1" role="navigation" aria-label="Mobile">
                     {navigation.map((item) => (
                       <a
                         key={item.name}
@@ -180,7 +179,7 @@ export default function Header() {
                       </a>
                     ))}
                   </div>
-                  <div className="mt-10 space-y-4">
+                  <div className="mt-8 space-y-4">
                     <a
                       href="tel:+6799680798"
                       className="block w-full text-center px-6 py-4 bg-black text-white rounded-full font-bold text-base hover:bg-gray-900 transition-colors"
@@ -200,7 +199,7 @@ export default function Header() {
                 </div>
               </div>
             </div>,
-            document.body,
+            portalTarget,
           )
         : null}
     </header>
